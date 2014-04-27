@@ -1,0 +1,43 @@
+<OFX>
+  <BANKMSGSRSV1>
+    <STMTTRNRS>
+      <STMTRS>
+        <CURDEF>EUR</CURDEF>
+        <BANKTRANLIST>
+          <STMTTRN>
+            <NAME>Debetrente</NAME>
+            <DTPOSTED>20120301</DTPOSTED>
+            <TRNTYPE>D</TRNTYPE>
+            <TRNAMT>-2.03</TRNAMT>
+            <BANKACCTTO>0000000000</BANKACCTTO>
+            <MEMO>Periode 01-02-2012 t/m 29-02-201</MEMO>
+          </STMTTRN>
+          <STMTTRN>
+            <NAME>Handyman Emiclaer AMERSF</NAME>
+            <DTPOSTED>20120303</DTPOSTED>
+            <TRNTYPE>D</TRNTYPE>
+            <TRNAMT>-101.96</TRNAMT>
+            <BANKACCTTO>0000000000</BANKACCTTO>
+            <MEMO>Betaalautomaat 15:26 pasnr. 023</MEMO>
+          </STMTTRN>
+          <STMTTRN>
+            <NAME>Karwei Amersfoort AMERSF</NAME>
+            <DTPOSTED>20120303</DTPOSTED>
+            <TRNTYPE>D</TRNTYPE>
+            <TRNAMT>-7.09</TRNAMT>
+            <BANKACCTTO>0000000000</BANKACCTTO>
+            <MEMO>Betaalautomaat 15:40 pasnr. 023</MEMO>
+          </STMTTRN>
+          <STMTTRN>
+            <NAME>Albert Heijn 1157 AMERSF</NAME>
+            <DTPOSTED>20120303</DTPOSTED>
+            <TRNTYPE>D</TRNTYPE>
+            <TRNAMT>-22.56</TRNAMT>
+            <BANKACCTTO>0000000000</BANKACCTTO>
+            <MEMO>Betaalautomaat 18:41 pasnr. 021</MEMO>
+          </STMTTRN>
+        </BANKTRANLIST>
+      </STMTRS>
+    </STMTTRNRS>
+  </BANKMSGSRSV1>
+</OFX>
