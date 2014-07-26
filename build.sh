@@ -1,3 +1,5 @@
+export PYTHONPATH=$PYTHONPATH:./lib/requests
+
 while getopts ":c:t" opt; do
   case $opt in
     c)

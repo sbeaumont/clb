@@ -1,4 +1,4 @@
-from transaction import CSVParseError
+from transaction.transaction import CSVParseError
 from transactioncsvreader import TransactionCSVReader
 from ofxwriter import OFXWriter
 import sys
@@ -11,7 +11,7 @@ class CSVToOFXConverter():
     def addFile(self, filename):
         self.reader.readCSV(filename)
     
-    def convert(self):
+    def convert(self, outputFile):
         writer = OFXWriter()
         
         for transaction in self.reader:
@@ -21,7 +21,11 @@ class CSVToOFXConverter():
             except CSVParseError as e:
                 print >> sys.stderr, "Transaction " + str(transaction.source) + " did not validate: " + str(e)
         
-        print writer.write()
+        f = open(outputFile, 'w')
+        try:
+            f.write(writer.write())
+        finally:
+            f.close()
             
 if __name__ == '__main__':
     converter = CSVToOFXConverter()

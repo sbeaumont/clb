@@ -7,7 +7,7 @@ import sys
 import itertools
 import csv
 
-from transactionfactory import createTransaction
+from transaction.transactionfactory import createTransaction
 
 class TransactionCSVReader:
     """Reads CSV files and loads them in memory. You can read multiple files, all records will be collected

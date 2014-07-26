@@ -1,13 +1,6 @@
-"""Format of the older, non-SEPA Rabobank exports.
-
-Based on http://www.rabobank.nl/images/formaatbeschrijving_csv_kommagescheiden_nieuw_29539176.pdf
-
-Because we live in a SEPA compliant world now, this type will add the Rabobank IBAN prefix to the 'from account' number.
-This makes sure that all transactions for an account end up in the same account in the output file, whether they came
-from a compliant or non-compliant source."""
-
 import transaction
 from transaction import Transaction
+from converter import ibanchecker
 
 NON_SEPA_COMPLIANT_FIELDS = (
     ("VAN_REK", "^\d{10}$"),
@@ -35,17 +28,21 @@ def isRabobankNonSEPATransaction(csvtransaction):
     return (len(csvtransaction) == NUM_FIELDS_NON_SEPA) and (not csvtransaction[0].startswith(transaction.IBAN_RABOBANK_PREFIX))
 
 class RabobankNonSEPATransaction(Transaction):
+    """Format of the older, non-SEPA Rabobank exports.
+
+    Based on http://www.rabobank.nl/images/formaatbeschrijving_csv_kommagescheiden_nieuw_29539176.pdf
+
+    Because we live in a SEPA compliant world now, this type will add the Rabobank IBAN prefix to the 'from account' number.
+    This makes sure that all transactions for an account end up in the same account in the output file, whether they came
+    from a compliant or non-compliant source."""
+    
     def fields(self):
         return NON_SEPA_COMPLIANT_FIELDS
 
     def fromAccount(self):
-        if not self.ibansource:
-            import request
-            self.ibansource = (request.get("http://www.openiban.nl/?rekeningnummer=%s&output=json)" % self.source[0])).json()['iban']
-        print self.ibansource
+        if not hasattr(self, "ibansource"):
+            self.ibansource = ibanchecker.check(self.source[0])
         return self.ibansource
-        
-        #return transaction.IBAN_RABOBANK_PREFIX + self.source[0]
 
     def name(self):
         return self.source[6]
@@ -58,7 +55,9 @@ class RabobankNonSEPATransaction(Transaction):
         
     def to(self):
         #tegenrekening
-        return self.source[5]
+        if not hasattr(self, "ibanto"):
+            self.ibanto = ibanchecker.check(self.source[5])
+        return self.ibanto
     
     def date(self):
         return self.source[7]

@@ -15,9 +15,7 @@ Veld  Omschrijving              Formaat                   Voorbeeld
 """
 
 from transaction import Transaction
-
-ING_IBAN_PREFIX = "NL26INGB"
-
+import ibanchecker
 
 def isINGNonSEPATransaction(transaction):
     """Recognizes an ING transaction due to its number of fields (5). Converts any commas to dots in amount and removes the dots in the account number."""
@@ -31,7 +29,7 @@ class INGNonSEPATransaction(Transaction):
     Changes (dutch) comma for amount to a dot, which is the standard of this tool."""
     
     def _convertToIBAN(self, accountNumber):
-        return ING_IBAN_PREFIX + accountNumber.replace(".", "").rjust(10, "0")
+        return ibanchecker.check(accountNumber.replace(".", "").rjust(10, "0"))
     
     def fields(self):
         pass
@@ -49,7 +47,7 @@ class INGNonSEPATransaction(Transaction):
         return self.source[3].replace(",", ".")
         
     def to(self):
-        return self.source[4].replace(".", "").rjust(10, "0")
+        return self._convertToIBAN(self.source[4])
     
     def date(self):
         return self.source[1]

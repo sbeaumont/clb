@@ -7,7 +7,7 @@ from converter.transaction.rabobanksepatransaction import RabobankSEPATransactio
 from converter.transaction.nulltransaction import NullTransaction
 from converter.transaction.transaction import CSVParseError
 
-TEST_FILE_DIR = "test/data"
+TEST_FILE_DIR = "test/data/"
 
 RABOBANK_TRANSACTIONS_SEPA = TEST_FILE_DIR + "rabobank-transactions-SEPA.csv"
 RABOBANK_TRANSACTIONS_SEPA_NUM_RECORDS = 4
