@@ -2,12 +2,12 @@ import unittest
 
 import converter
 from converter.transactioncsvreader import TransactionCSVReader
-from converter.rabobanknonsepatransaction import RabobankNonSEPATransaction
-from converter.rabobanksepatransaction import RabobankSEPATransaction
-from converter.nulltransaction import NullTransaction
-from converter.transaction import CSVParseError
+from converter.transaction.rabobanknonsepatransaction import RabobankNonSEPATransaction
+from converter.transaction.rabobanksepatransaction import RabobankSEPATransaction
+from converter.transaction.nulltransaction import NullTransaction
+from converter.transaction.transaction import CSVParseError
 
-TEST_FILE_DIR = "test/"
+TEST_FILE_DIR = "test/data"
 
 RABOBANK_TRANSACTIONS_SEPA = TEST_FILE_DIR + "rabobank-transactions-SEPA.csv"
 RABOBANK_TRANSACTIONS_SEPA_NUM_RECORDS = 4
@@ -27,9 +27,9 @@ MALFORMED_NON_SEPA_NUM_RECORDS = 6
 RABOBANK_5_DUPLICATE_TRANSACTIONS_MIXED = TEST_FILE_DIR + "rabobank-5-duplicate-transactions-mixed.csv"
 RABOBANK_5_DUPLICATE_TRANSACTIONS_MIXED_NUM_RECORDS = 5
 
-IBAN_RABOBANK_PREFIX = converter.transaction.IBAN_RABOBANK_PREFIX
-NUM_FIELDS_SEPA = converter.rabobanksepatransaction.NUM_FIELDS_SEPA
-NUM_FIELDS_NON_SEPA = converter.rabobanknonsepatransaction.NUM_FIELDS_NON_SEPA
+IBAN_RABOBANK_PREFIX = converter.transaction.transaction.IBAN_RABOBANK_PREFIX
+NUM_FIELDS_SEPA = converter.transaction.rabobanksepatransaction.NUM_FIELDS_SEPA
+NUM_FIELDS_NON_SEPA = converter.transaction.rabobanknonsepatransaction.NUM_FIELDS_NON_SEPA
 
 class TestRaboCSVReader(unittest.TestCase):
 
@@ -59,7 +59,6 @@ class TestRaboCSVReader(unittest.TestCase):
 
     def testReadingNonSEPACSVFile(self):
         self.readCSVFile(RABOBANK_TRANSACTIONS_NON_SEPA)
-        
         self.assertEqual(RABOBANK_TRANSACTIONS_NON_SEPA_NUM_RECORDS, len(self.transactions))
         self.assertEqual(NUM_FIELDS_NON_SEPA, len(self.firstTransaction))
         self.assertFalse(self.firstTransaction[0].startswith(IBAN_RABOBANK_PREFIX))
