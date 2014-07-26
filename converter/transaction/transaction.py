@@ -21,11 +21,11 @@ class Transaction:
     
     def validate(self):
         """Validates the transaction fields with the regexes given by the fields() method.
-        
+
         Throws a CSVParseError if any violation is found."""
         transaction = self.source
         fields = self.fields()
-    
+
         for i in range(len(transaction)):
             pattern = fields[i][1]
             value = transaction[i]

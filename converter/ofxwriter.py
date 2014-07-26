@@ -24,6 +24,23 @@ OFX_STATEMENT_TEMPLATE = """<STMTTRN>
     <MEMO></MEMO>
 </STMTTRN>"""
 
+def indent(elem, level=0):
+  "Copied from http://norwied.wordpress.com/2013/08/27/307/"
+  i = "\n" + level*"  "
+  if len(elem):
+    if not elem.text or not elem.text.strip():
+      elem.text = i + "  "
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+    for elem in elem:
+      indent(elem, level+1)
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+  else:
+    if level and (not elem.tail or not elem.tail.strip()):
+      elem.tail = i
+
+
 class OFXWriter:
     """Writes Transaction instances into an OFX file.
     
@@ -56,7 +73,7 @@ class OFXWriter:
     def addTransaction(self, transaction):
         trnroot = ET.Element("STMTTRN")
         # Three things happen here for each line: create subnode, attach to transaction node, set node text
-        ET.SubElement(trnroot, "NAME").text = transaction.name()
+        ET.SubElement(trnroot, "NAME").text = unicode(transaction.name())
         ET.SubElement(trnroot, "DTPOSTED").text = transaction.date()
         ET.SubElement(trnroot, "TRNTYPE").text = transaction.type()
         ET.SubElement(trnroot, "TRNAMT").text = transaction.amount()
@@ -66,6 +83,7 @@ class OFXWriter:
         self._transactionListForAccount(transaction).append(trnroot)
     
     def write(self):
+        indent(self.root)
         return ET.tostring(self.root)
 
 if __name__ == '__main__':

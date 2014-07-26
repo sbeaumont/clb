@@ -3,6 +3,7 @@
 # Serge Beaumont, 2014
 
 import os
+import sys
 import itertools
 import csv
 

@@ -14,11 +14,11 @@ NON_SEPA_COMPLIANT_FIELDS = (
     ("MUNTSOORT", "^EUR$"),
     ("RENTEDATUM", "^\d{8}$"),
     ("BY_AF_CODE", "^[DC]$"),
-    ("BEDRAG", "^\d{1,12}\.\d{2}$"),
+    ("BEDRAG", "^\d{,12}\.\d{2}$"),
     ("NAAR_REK", "^\w{,10}$"),
     ("NAAR_NAAM", "^.{,24}$"),
     ("BOEKDATUM", "^\d{8}$"),
-    ("BOEKCODE", "^\w{2}$"),
+    ("BOEKCODE", "^\w{,2}$"),
     ("BUDGETCODE", "^.{,6}$"),
     ("OMSCHR1", "^.{,32}$"),
     ("OMSCHR2", "^.{,32}$"),
@@ -39,7 +39,13 @@ class RabobankNonSEPATransaction(Transaction):
         return NON_SEPA_COMPLIANT_FIELDS
 
     def fromAccount(self):
-        return IBAN_RABOBANK_PREFIX + self.source[0]
+        if not self.ibansource:
+            import request
+            self.ibansource = (request.get("http://www.openiban.nl/?rekeningnummer=%s&output=json)" % self.source[0])).json()['iban']
+        print self.ibansource
+        return self.ibansource
+        
+        #return transaction.IBAN_RABOBANK_PREFIX + self.source[0]
 
     def name(self):
         return self.source[6]

@@ -17,19 +17,20 @@ ac = betaling aan publieke dienst
 
 """
 
+import re
 import transaction
 from transaction import Transaction
 
 SEPA_COMPLIANT_FIELDS = (
-    ("REKENINGNUMMER_REKENINGHOUDER", "^NL20RABO\d{10}$"),
+    ("REKENINGNUMMER_REKENINGHOUDER", "^NL\d{2}RABO\d{10}$"),
     ("MUNTSOORT", "^EUR$"),
     ("RENTEDATUM", "^\d{8}$"),
     ("BY_AF_CODE", "^[DC]$"),
-    ("BEDRAG", "^\d{1,12}\.\d{2}$"),
+    ("BEDRAG", "^\d{,12}\.\d{2}$"),
     ("TEGENREKENING", "^\w{,35}$"),
     ("NAAR_NAAM", "^.{,70}$"),
     ("BOEKDATUM", "^\d{8}$"),
-    ("BOEKCODE", "^\w{2}$"),
+    ("BOEKCODE", "^\w{,2}$"),
     ("FILLER", "^.{,6}$"),
     ("OMSCHR1", "^.{,35}$"),
     ("OMSCHR2", "^.{,35}$"),
@@ -45,7 +46,7 @@ SEPA_COMPLIANT_FIELDS = (
 NUM_FIELDS_SEPA = len(SEPA_COMPLIANT_FIELDS)
 
 def isRabobankSEPATransaction(csvtransaction):
-    return (len(csvtransaction) == NUM_FIELDS_SEPA) and (csvtransaction[0].startswith(transaction.IBAN_RABOBANK_PREFIX))
+    return (len(csvtransaction) == NUM_FIELDS_SEPA) and re.match(SEPA_COMPLIANT_FIELDS[0][1], csvtransaction[0])
 
 class RabobankSEPATransaction(Transaction):
     def fields(self):
