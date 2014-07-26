@@ -1,6 +1,6 @@
 import transaction
 from transaction import Transaction
-from converter import ibanchecker
+from converter import ibanconverter
 
 NON_SEPA_COMPLIANT_FIELDS = (
     ("VAN_REK", "^\d{10}$"),
@@ -40,9 +40,7 @@ class RabobankNonSEPATransaction(Transaction):
         return NON_SEPA_COMPLIANT_FIELDS
 
     def fromAccount(self):
-        if not hasattr(self, "ibansource"):
-            self.ibansource = ibanchecker.check(self.source[0])
-        return self.ibansource
+        return ibanconverter.check(self.source[0])
 
     def name(self):
         return self.source[6]
@@ -55,9 +53,7 @@ class RabobankNonSEPATransaction(Transaction):
         
     def to(self):
         #tegenrekening
-        if not hasattr(self, "ibanto"):
-            self.ibanto = ibanchecker.check(self.source[5])
-        return self.ibanto
+        return ibanconverter.check(self.source[5])
     
     def date(self):
         return self.source[7]
