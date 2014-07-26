@@ -85,36 +85,3 @@ class OFXWriter:
     def write(self):
         indent(self.root)
         return ET.tostring(self.root)
-
-if __name__ == '__main__':
-    ofxwriter = OFXWriter()
-    
-    class TestTransaction:
-        def fromAccount(self):
-            return "1234"
-        
-        def name(self):
-            return "name"
-        
-        def date(self):
-            return "20140607"
-        
-        def type(self):
-            return "DEBIT"
-        
-        def amount(self):
-            return "-50.00"
-        
-        def to(self):
-            return "NL20RABO123456890"
-            
-        def description(self):
-            return "desc"
-    
-
-    ofxwriter.addTransaction(TestTransaction())
-    ofxwriter.addTransaction(TestTransaction())
-    ofxwriter.addTransaction(TestTransaction())
-    
-    print ofxwriter.write()
-    

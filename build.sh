@@ -1,4 +1,4 @@
-export PYTHONPATH=$PYTHONPATH:./lib/requests
+export PYTHONPATH=$PYTHONPATH:./lib/requests:./converter
 
 while getopts ":c:t" opt; do
   case $opt in

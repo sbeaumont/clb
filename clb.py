@@ -1,17 +1,13 @@
 import sys
 import os
+
+# This will trigger configuration
 import config
-import logging
 
 from converter.csvtoofxconverter import CSVToOFXConverter
 
-rootlog = logging.getLogger('')
-rootlog.setLevel(logging.DEBUG)
-fh = logging.FileHandler('spam.log')
-rootlog.addHandler(fh)
-
 if len(sys.argv) != 3:
-    # No parameters passed: show help text
+    # Did not pass two parameters (sys.argv[0] is file name): show help text
     print "Usage: clb.py <directory with .csv files> <output file>"
     print "Example: python clb.py ../data output.xml"
     sys.exit()

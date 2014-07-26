@@ -2,9 +2,12 @@ from transaction.transaction import CSVParseError
 from transactioncsvreader import TransactionCSVReader
 from ofxwriter import OFXWriter
 import sys
+import logging
+
+log = logging.getLogger(__name__)
 
 class CSVToOFXConverter():
-    
+    """Converts CSV transaction exports to the OFX format, which is a standard and widely used by banking applications."""
     def __init__(self):
         self.reader = TransactionCSVReader()
 
@@ -19,15 +22,12 @@ class CSVToOFXConverter():
                 transaction.validate()
                 writer.addTransaction(transaction)
             except CSVParseError as e:
-                print >> sys.stderr, "Transaction " + str(transaction.source) + " did not validate: " + str(e)
+                errorText = "Transaction %s did not validate: %s" % (str(transaction.source), str(e))
+                print >> sys.stderr, errorText
+                log.error(errorText)
         
         f = open(outputFile, 'w')
         try:
             f.write(writer.write())
         finally:
             f.close()
-            
-if __name__ == '__main__':
-    converter = CSVToOFXConverter()
-    converter.addFile("test/rabobank-transactions-SEPA.csv")
-    converter.convert()

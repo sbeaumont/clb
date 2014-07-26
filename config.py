@@ -1,5 +1,14 @@
 import sys
 import os
+import logging
+
+# Initialize logging
+rootlog = logging.getLogger('')
+rootlog.setLevel(logging.DEBUG)
+fh = logging.FileHandler('clb.log')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+rootlog.addHandler(fh)
 
 def appendPath(relativePath):
     """Add library directory to search path relative to this file.
@@ -23,7 +32,6 @@ def appendPath(relativePath):
 
 # Requests library: http://docs.python-requests.org/en/latest/
 appendPath( ("lib", "requests") )
-
 
 if __name__ == "__main__":
     # Simple unit tests

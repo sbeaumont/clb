@@ -6,6 +6,9 @@ import os
 import sys
 import itertools
 import csv
+import logging
+
+log = logging.getLogger(__name__)
 
 from transaction.transactionfactory import createTransaction
 
@@ -43,7 +46,9 @@ class TransactionCSVReader:
         assert inputFileName != None, "Can not handle null file name"
         
         if not os.path.isfile(inputFileName):
-            raise IOError, "File " + inputFileName + " is not an existing or openable file"
+            msg = "File %s is not an existing or openable file" % inputFileName
+            log.error(msg)
+            raise IOError, msg
         
         self._resetCache()
         
@@ -53,8 +58,6 @@ class TransactionCSVReader:
                 for row in reader:
                     self.transactions.append(row)
             except csv.Error as e:
-                    sys.exit('file %s, line %d: %s' % (inputFileName, reader.line_num, e))
-
-if __name__ == "__main__":
-    ri = TransactionCSVReader()
-    ri.readCSV(sys.argv[0])
+                msg = 'file %s, line %d: %s' % (inputFileName, reader.line_num, e)
+                log.error(msg)
+                sys.exit(msg)

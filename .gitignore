@@ -1,2 +1,5 @@
 .DS_Store
 *.pyc
+ibancache.db
+clb.log
+output.xml

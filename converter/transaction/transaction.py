@@ -31,7 +31,8 @@ class Transaction:
             value = transaction[i]
             if not re.match(pattern, value):
                 fieldname = fields[i][0]
-                raise CSVParseError, "Field #" + str(i) + "(" + fieldname + ") value: '" + transaction[i] + "' did not comply with expected pattern '" + pattern + "'" 
+                msg = "Field #%s(%s) value: '%s' did not comply with expected pattern '%s'" % (str(i), fieldname, transaction[i], pattern)
+                raise CSVParseError, msg 
 
     def fields(self):
         """The fields of the transaction in the order they are in the CSV file.
